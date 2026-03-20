@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-
-
+from api.models.iris import PredictRequest, PredictResponse
+from inference import load_model,  predict  
+from training import load_data, train_model, save_model
 app = FastAPI()
 
 
@@ -12,3 +13,15 @@ def welcome_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+@app.get("/train")
+def train_model_endpoint():
+    model = train_model(*load_data())
+    save_model(model)
+    return {"message": "Model trained and saved successfully"}
+
+@app.post("/predict")
+def predict_endpoint(request: PredictRequest) -> PredictResponse:
+    model = load_model()
+    prediction = predict(model, request.model_dump())
+    return PredictResponse(prediction=prediction)

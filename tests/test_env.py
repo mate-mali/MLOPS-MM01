@@ -5,8 +5,10 @@ from main import run_app
 
 
 def test_run_dev(monkeypatch):
-    """Test that run_app works with dev environment."""
+    #Test that run_app works with dev environment.
     monkeypatch.setenv("SECRETS_FILE", "secrets.yaml")
+    monkeypatch.setenv("ENVIRONMENT", "dev")  #apparently i need to manually set this for the test to work, even though it should be set by the .env file
+    monkeypatch.setenv("APP_NAME", "main-dev")
     
     result = run_app("dev")
     
@@ -15,8 +17,10 @@ def test_run_dev(monkeypatch):
     assert type(result["secrets"]) == dict
 
 def test_run_prod(monkeypatch):
-    """Test that run_app works with prod environment."""
+    #test prod
     monkeypatch.setenv("SECRETS_FILE", "secrets.yaml")
+    monkeypatch.setenv("ENVIRONMENT", "prod")
+    monkeypatch.setenv("APP_NAME", "main-prod")
     
     result = run_app("prod")
     
@@ -25,9 +29,9 @@ def test_run_prod(monkeypatch):
     assert type(result["secrets"]) == dict
 
 def test_run_test(monkeypatch):
-    """Test that run_app works with test environment."""
+    #test run
     monkeypatch.setenv("SECRETS_FILE", "secrets.yaml")
-    
+    monkeypatch.setenv("ENVIRONMENT", "prod")
     result = run_app("test")
     
     assert result["ENVIRONMENT"] == "prod"
