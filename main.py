@@ -1,5 +1,9 @@
 import argparse
+from settings import Settings
 from dotenv import load_dotenv
+import os
+import yaml
+
 
 
 def export_envs(environment: str = "dev") -> None:
@@ -16,15 +20,16 @@ def export_envs(environment: str = "dev") -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Load environment variables based on the specified environment."
-    )
-    parser.add_argument(
-        "--environment",
-        type=str,
-        default="dev",
-        help="The environment to load (dev, test, prod)",
-    )
+    parser = argparse.ArgumentParser(description="Load environment variables from specified.env file.")
+    parser.add_argument("--environment", type=str, default="dev", help="The environment to load (dev, test, prod)")
     args = parser.parse_args()
 
-    export_envs(args.environment)
+    export_envs(args.environment) 
+    
+    settings = Settings()
+
+    y = yaml.safe_load(open(os.getenv("SECRETS_FILE")))
+    
+    print("APP_NAME: ", settings.APP_NAME)
+    print("ENVIRONMENT: ", settings.ENVIRONMENT)
+    print("Secrets: ", y)
