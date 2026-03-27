@@ -7,8 +7,7 @@ app = FastAPI()
 
 @app.get("/")
 def welcome_root():
-    return {"message": "Welcome to the ML API"}
-
+    return {"message": "Welcome to the ML API - use /docs endpoint if you are as lazy as i am"}
 
 @app.get("/health")
 def health_check():
